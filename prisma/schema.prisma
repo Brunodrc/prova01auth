@@ -1,0 +1,32 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String @id @default(uuid())
+  name              String
+  login             String @unique
+  telefone          String
+  password          String
+  conta_ativa       Boolean
+  account_activate  AccountActivate? 
+
+  @@map("users")
+}
+
+model AccountActivate {
+  id                String @id @default(uuid())
+  expersIn          Int
+  user              User @relation(fields: [userId], references: [id])
+  userId            String @unique
+
+  @@map("account_activate")
+}
